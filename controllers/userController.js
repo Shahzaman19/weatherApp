@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt')
 const { User, schema } = require('../modal/user')
+const jwt = require('jsonwebtoken')
 
 exports.getUser = async (req,res) => {
     const user =  await User.find()
@@ -21,7 +22,10 @@ exports.createUser = async (req, res) => {
         await user.save()
        
 
-        const token = user.generateAuthToken();
+        const token = jwt.sign({userId : user._id , userRole : user.role}, process.env.PRIVATE_KEY)
+        // console.log();
+        
+        // const token = user.generateAuthToken();
         res.header('x-auth-token', token).json({user : user})
        
 
@@ -41,8 +45,11 @@ exports.loginUser = async (req,res) => {
         if(!isPassword){
          return res.status(400).send("INVALID PASSWORD")
         }
- 
-     const token =  user.generateAuthToken();
+        const token = req.header('x-auth-token')
+        if(!token) return res.status(404).send('Token not found')
+
+        // const decoded = jwt.verify(token, process.env.PRIVATE_KEY)
+        //  const token =  user.generateAuthToken();
          res.json({token : token, msg : "Login Successfully"})
      } 
      catch (error) {

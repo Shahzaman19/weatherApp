@@ -36,10 +36,10 @@ const userSchema = new mongoose.Schema({
 });
 
 
-userSchema.methods.generateAuthToken = function(){
-    const token = jwt.sign({ userId: this._id , userRole : this.role}, process.env.PRIVATE_KEY);
-    return token;
-}
+// userSchema.methods.generateAuthToken = function(){
+//     const token = jwt.sign({ userId: this._id , userRole : this.role}, process.env.PRIVATE_KEY);
+//     return token;
+// }
 
 const User = mongoose.model('users',userSchema) 
         const schema = Joi.object({

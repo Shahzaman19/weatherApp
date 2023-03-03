@@ -102,28 +102,28 @@ exports.searchUser = async (req,res) => {
 }
 
 exports.userFavouriteLocation = async (req,res) => {
-    const { id } = req.query;
-    let page = Number(req.query.page) || 1;
-    let limit = Number(req.query.limit) || 3;
-    let skip = (page - 1) * limit
-    const user = await User.find({_id: id}).skip(skip).limit(limit);
-
     // const { id } = req.query;
     // let page = Number(req.query.page) || 1;
     // let limit = Number(req.query.limit) || 3;
-    // let skip = (page - 1) * limit;
+    // let skip = (page - 1) * limit
+    // const user = await User.findById(id).skip(skip).limit(limit).exec();
 
-    // const user = await User.aggregate([
-    // { $match: { _id: new mongoose.Types.ObjectId(id) } },
-    // { $skip: skip },
-    // { $limit: limit }
-    // ]);
+    const { id } = req.query;
+    let page = Number(req.query.page) || 1;
+    let limit = Number(req.query.limit) || 3;
+    let skip = (page - 1) * limit;
 
-    // res.send(user);
-    // console.log("USER => ",user);
+    const user = await User.aggregate([
+    { $match: { _id: new mongoose.Types.ObjectId(id) } },
+    { $skip: skip },
+    { $limit: limit }
+    ]);
+
+    res.send(user);
+    console.log("USER =>",user);
 
 
-    if (user.length <= 0) {
+    if (!user) {
         return res.status(404).json({ message: 'User not found' });
     }
     const { favourite_Location } = user; 

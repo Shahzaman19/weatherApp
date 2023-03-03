@@ -5,7 +5,7 @@ const app = express()
 app.use(express.json())
 
 port = process.env.PORT || 3000;
-const users = require('./routes/user')
+const users = require('./routes/userRoutes')
 
 mongoose.connect("mongodb://127.0.0.1:27017/weatherApp")
 .then(() => console.log  ('Connected to Mongo'))

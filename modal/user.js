@@ -24,7 +24,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['user', 'admin'],
         default: 'user'
-    } 
+    },
+    is_Active: {
+        type: Boolean,
+        default : false         
+    },
+    favourite_Location : {
+        type : String,
+        // default : 'Mumbai'
+    }
 });
 
 
@@ -39,6 +47,8 @@ const User = mongoose.model('users',userSchema)
         password : Joi.string().min(5).max(255).required(),
         email : Joi.string().min(5).max(255).required().email(),
         role : Joi.string().min(3).max(255),
+        is_Active : Joi.string().min(3).max(255),
+        favourite_Location : Joi.string().min(3).max(255),
     })
 
 

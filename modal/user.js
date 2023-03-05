@@ -30,16 +30,10 @@ const userSchema = new mongoose.Schema({
         default : false         
     },
     favourite_Location : {
-        type : String,
-        // default : 'Mumbai'
+        type : Array,
+        default : 'karachi'
     }
 });
-
-
-// userSchema.methods.generateAuthToken = function(){
-//     const token = jwt.sign({ userId: this._id , userRole : this.role}, process.env.PRIVATE_KEY);
-//     return token;
-// }
 
 const User = mongoose.model('users',userSchema) 
         const schema = Joi.object({
@@ -48,7 +42,7 @@ const User = mongoose.model('users',userSchema)
         email : Joi.string().min(5).max(255).required().email(),
         role : Joi.string().min(3).max(255),
         is_Active : Joi.string().min(3).max(255),
-        favourite_Location : Joi.string().min(3).max(255),
+        favourite_Location : Joi.array().min(1).max(255),
     })
 
 

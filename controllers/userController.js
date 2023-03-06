@@ -6,13 +6,21 @@ const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 
 exports.getUser = async (req, res) => {
+   try {
     let page = Number(req.query.page) || 1;
     let limit = Number(req.query.limit) || 3;
     let skip = (page - 1) * limit;
 
     const users = await User.find().skip(skip).limit(limit);
 
-    res.send(users);
+
+    res.send(users); 
+   } 
+   catch (error) {
+    res.send(error.message)
+   }
+
+     
 
 };
 
@@ -123,5 +131,19 @@ exports.weatherDetails = async (req,res) => {
 
     const response = await axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${location}&apiKey=${apiKey}`);
     res.send(response.data);
+
+}
+
+exports.userStatus = async (req,res) => {
+    const user = await User.findByIdAndUpdate(req.user.userId, req.body);
+
+    if (!user) return res.status(403).send('User not found')
+
+    if(req.user.userRole == 'admin'){
+       user.is_Active = true
+    }else{
+        console.log("User is not admin");
+    }
+    res.send(user);
 
 }

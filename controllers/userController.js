@@ -2,7 +2,6 @@ const bcrypt = require('bcrypt')
 const { User, schema } = require('../modal/user')
 const axios = require('axios')
 const apiKey = '583d2da5b39bcfa2d41fde112f51d75d'
-const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 
 //Getting all USER with pagination
@@ -175,16 +174,3 @@ exports.weatherDetails = async (req,res) => {
 
 }
 
-exports.userStatus = async (req,res) => {
-    const user = await User.findByIdAndUpdate(req.user.userId, req.body);
-
-    if (!user) return res.status(403).send('User not found')
-
-    if(req.user.userRole == 'admin'){
-       user.is_Active = true
-    }else{
-        console.log("User is not admin");
-    }
-    res.send(user);
-
-}

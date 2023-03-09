@@ -11,7 +11,6 @@ router.put('/edit', auth,  userController.editUser);
 router.get('/search', auth, admin, userController.searchUser);
 router.get('/favouriteLocation', auth, userController.userFavouriteLocation);
 router.get('/weatherDetails', auth,  userController.weatherDetails);
-router.put('/userStatus', auth, admin, userController.userStatus);
 router.put('/update', auth, admin,  userController.updateUser);
 
 

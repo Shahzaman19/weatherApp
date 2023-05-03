@@ -9,8 +9,9 @@ router.post('/create', userController.createUser);
 router.post('/login', userController.loginUser);
 router.put('/edit', auth,  userController.editUser);
 router.get('/search', auth, admin, userController.searchUser);
-router.get('/favouriteLocation', auth, admin, userController.userFavouriteLocation);
-router.get('/weatherDetails', auth, admin, userController.weatherDetails);
+router.get('/favouriteLocation', auth, userController.userFavouriteLocation);
+router.get('/weatherDetails', auth,  userController.weatherDetails);
+router.put('/update', auth, admin,  userController.updateUser);
 
 
 module.exports = router;

@@ -67,13 +67,30 @@ exports.loginUser = async (req, res, next) => {
     }
 };
 
+
 exports.editUser = async (req, res) => {
-    const user = await User.findByIdAndUpdate(req.user.userId, req.body);
+    try {
+        const user = await User.findById(req.user.userId);
 
-    if (!user) return res.status(403).send('User not found')
+        if (!user) return res.status(403).send('User not found');
 
-    res.send(user);
-}
+        let isPassword = await bcrypt.compare(req.body.password, user.password);
+       
+        if (isPassword) {
+            return res.status(400).send("Invalid current password");
+        }
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(req.body.password, salt);
+
+        await user.save();
+
+        res.send(user);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
+};
+
 
 exports.searchUser = async (req,res) => {
    const user = await User.findOne({email : req.body.email})
